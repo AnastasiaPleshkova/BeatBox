@@ -71,7 +71,10 @@ public class BeatBox {
         clear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                for (JCheckBox c : chechkBoxList)
+                {
+                    c.setSelected(false);
+                }
             }
         });
         buttonBox.add(clear);
