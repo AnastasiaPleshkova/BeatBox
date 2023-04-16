@@ -1,8 +1,9 @@
 import javax.sound.midi.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.io.*;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class BeatBox {
     int[] instruments = {35, 42, 46, 38, 49, 39, 50, 60, 70, 72, 64, 56, 58, 47, 67, 63};
 
     public static void main(String[] args) {
+
         new BeatBox().buildGUI();
     }
 
@@ -29,6 +31,7 @@ public class BeatBox {
         background.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         chechkBoxList = new ArrayList<>();
         Box buttonBox = new Box(BoxLayout.Y_AXIS);
+
         JButton start = new JButton("Start");
         start.addActionListener(new ActionListener() {
             @Override
@@ -78,6 +81,46 @@ public class BeatBox {
             }
         });
         buttonBox.add(clear);
+
+        JButton save = new JButton("Save");
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                boolean[] checkboxState = new boolean[256];
+
+                for (int i = 0; i < 256; i++) {
+                    JCheckBox check = (JCheckBox) chechkBoxList.get(i);
+                    if(check.isSelected())
+                        checkboxState[i] = true;
+                }
+
+                try (
+                    ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(new File("Checkbox.ser")));)
+                    {os.writeObject(checkboxState);}
+                catch (Exception ex) {ex.printStackTrace();}
+            }
+        });
+        buttonBox.add(save);
+
+        JButton restore = new JButton("Restore");
+        restore.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                boolean[] checkboxState = null;
+                try
+                    (ObjectInputStream is = new ObjectInputStream(new FileInputStream(new File("Checkbox.ser")));)
+                    {checkboxState = (boolean[]) is.readObject();}
+                catch (Exception ex) {ex.printStackTrace();}
+
+                for (int i = 0; i < 256; i++) {
+                    JCheckBox check = (JCheckBox) chechkBoxList.get(i);
+                    if (checkboxState[i]) check.setSelected(true);
+                    else check.setSelected(false);
+                }
+                sequencer.stop();
+            }
+        });
+        buttonBox.add(restore);
 
         Box nameBox = new Box(BoxLayout.Y_AXIS);
         for (int i = 0; i < 16; i++) {
@@ -168,4 +211,13 @@ public class BeatBox {
         } catch (Exception e) {e.printStackTrace();}
         return event;
     }
+
+    public class MySendListener implements ActionListener{
+        public void actionPerformed(ActionEvent a){
+
+        }
+    }
+
+
+
 }
