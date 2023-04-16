@@ -23,7 +23,7 @@ public class BeatBox {
     }
 
     public void buildGUI() {
-        theFrame = new JFrame("Cyber BeatBox");
+        theFrame = new JFrame("BeatBox");
         theFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel background = new JPanel(new BorderLayout());
         background.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
