@@ -8,6 +8,6 @@ Press Start button to start play your melody.
 Press Stop button to stop playing.
 Clear button help you to start over and set all check-boxes unselected. 
 
- 
+![Project screenshot](https://github.com/AnastasiaPleshkova/BeatBox/blob/master/BeatBox/src/main/resources/screenshot.PNG)
 
  
